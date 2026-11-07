@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#050914" />
+  <meta name="description" content="PIXELON – Edit. Create. Dominate. Pridaj sa do kreatívneho a technologického tímu." />
+  <title>PIXELON — We are building the future</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      --bg: #050914;
+      --panel: rgba(9, 19, 39, .78);
+      --panel-2: rgba(10, 27, 52, .72);
+      --blue: #18bfff;
+      --blue-2: #087bff;
+      --cyan: #75e6ff;
+      --white: #edf8ff;
+      --muted: #91a9bf;
+      --line: rgba(67, 190, 255, .2);
+      --glow: 0 0 24px rgba(24, 191, 255, .28), 0 0 70px rgba(8, 123, 255, .13);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--white);
+      background:
+        radial-gradient(ellipse at 50% 5%, rgba(0, 115, 255, .17), transparent 36rem),
+        radial-gradient(ellipse at 90% 70%, rgba(0, 207, 255, .08), transparent 30rem),
+        var(--bg);
+      font-family: Inter, system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed; inset: 0; pointer-events: none; z-index: -1;
+      opacity: .2;
+      background-image: linear-gradient(rgba(65, 166, 255, .09) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(65, 166, 255, .09) 1px, transparent 1px);
+      background-size: 54px 54px;
+      mask-image: linear-gradient(to bottom, black, transparent 85%);
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+
+    .noise {
+      position: fixed; inset: 0; pointer-events: none; z-index: 10; opacity: .035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+    }
+    .scanline {
+      position: fixed; inset: -100% 0 auto; height: 35vh; z-index: 9; pointer-events: none;
+      background: linear-gradient(transparent, rgba(49, 191, 255, .045), transparent);
+      animation: scan 9s linear infinite;
+    }
+    @keyframes scan { to { transform: translateY(420vh); } }
+    @keyframes pulse { 0%,100% { opacity: .65; transform: scale(.98); } 50% { opacity: 1; transform: scale(1.04); } }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    @keyframes reveal { from { opacity: 0; transform: translateY(24px); filter: blur(8px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+    @keyframes sweep { 0% { transform: translateX(-130%) skewX(-20deg); } 55%,100% { transform: translateX(230%) skewX(-20deg); } }
+    @keyframes orbit { to { transform: rotate(360deg); } }
+    @keyframes flicker { 0%, 18%, 22%, 100% { opacity: 1; } 20% { opacity: .72; } }
+
+    .wrap { width: min(1160px, calc(100% - 44px)); margin: auto; }
+    header {
+      height: 82px; display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid rgba(103, 190, 255, .12);
+      position: relative; z-index: 5;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 900; letter-spacing: .16em; }
+    .brand-mark {
+      width: 38px; height: 38px; display: grid; place-items: center;
+      border: 1px solid var(--blue); color: var(--cyan); font: 900 21px "Barlow Condensed", sans-serif;
+      transform: skew(-8deg); box-shadow: var(--glow); text-shadow: 0 0 14px var(--blue);
+    }
+    .brand span { font-size: 17px; }
+    .brand small { display: block; color: var(--muted); font-size: 8px; letter-spacing: .32em; margin-top: 3px; }
+    nav { display: flex; align-items: center; gap: 28px; color: #a9bfd2; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    nav a { transition: color .2s; }
+    nav a:hover { color: var(--cyan); }
+    .nav-cta { color: var(--cyan); border: 1px solid var(--line); padding: 11px 15px; }
+
+    .hero { min-height: 700px; display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 36px; padding: 74px 0 90px; position: relative; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; color: var(--cyan); font-size: 10px; font-weight: 800; letter-spacing: .25em; text-transform: uppercase; }
+    .dot { width: 7px; height: 7px; background: var(--blue); border-radius: 50%; box-shadow: 0 0 13px var(--blue); animation: pulse 1.6s infinite; }
+    h1 {
+      margin: 20px 0 12px; font: 900 clamp(76px, 11vw, 142px)/.78 "Barlow Condensed", Impact, sans-serif;
+      letter-spacing: -.035em; text-transform: uppercase; animation: reveal .9s both;
+    }
+    h1 .pixel { display: block; color: transparent; -webkit-text-stroke: 1.5px var(--cyan); text-shadow: 0 0 30px rgba(24,191,255,.22); }
+    h1 .on { display: block; color: var(--white); text-shadow: 0 0 35px rgba(24,191,255,.3); }
+    .slogan { color: var(--blue); font-size: 12px; font-weight: 800; letter-spacing: .34em; margin: 24px 0; }
+    .hero-copy { max-width: 530px; color: #a8bdce; line-height: 1.8; font-size: 15px; }
+    .hero-copy strong { color: var(--white); }
+    .actions { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 30px; }
+    .btn {
+      min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 0 21px; border: 1px solid var(--blue); color: #00101b; background: linear-gradient(110deg, var(--cyan), #159bff 65%, #087bff);
+      font-size: 11px; font-weight: 900; letter-spacing: .13em; text-transform: uppercase;
+      box-shadow: 0 0 24px rgba(24,191,255,.22); transition: transform .2s, box-shadow .2s; cursor: pointer;
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    }
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 0 34px rgba(24,191,255,.45); }
+    .btn.secondary { color: var(--cyan); background: rgba(5,15,30,.65); border-color: rgba(24,191,255,.42); box-shadow: none; }
+    .hero-art { min-height: 470px; position: relative; display: grid; place-items: center; }
+    .halo {
+      position: absolute; width: min(430px, 90%); aspect-ratio: 1; border: 1px solid rgba(24,191,255,.28); border-radius: 50%;
+      box-shadow: inset 0 0 55px rgba(24,191,255,.07), 0 0 55px rgba(24,191,255,.08);
+      animation: orbit 34s linear infinite;
+    }
+    .halo::before, .halo::after { content: ""; position: absolute; border: 1px dashed rgba(24,191,255,.35); border-radius: 50%; inset: 28px; }
+    .halo::after { inset: 68px; border-style: solid; opacity: .45; }
+    .core {
+      width: 250px; height: 250px; display: grid; place-items: center; position: relative;
+      border: 1px solid rgba(94,221,255,.7); background: linear-gradient(145deg, rgba(11,49,83,.85), rgba(3,10,23,.95));
+      box-shadow: 0 0 45px rgba(24,191,255,.24), inset 0 0 45px rgba(24,191,255,.12);
+      transform: rotate(45deg); animation: float 5s ease-in-out infinite;
+    }
+    .core::before { content: ""; position: absolute; inset: 14px; border: 1px solid rgba(24,191,255,.3); }
+    .core-inner { transform: rotate(-45deg); text-align: center; }
+    .core-inner b { display: block; font: 900 62px/.9 "Barlow Condensed", sans-serif; letter-spacing: -.04em; text-shadow: 0 0 20px var(--blue); }
+    .core-inner small { display: block; margin-top: 9px; font-size: 8px; color: var(--cyan); letter-spacing: .32em; }
+    .orbit-tag { position: absolute; padding: 9px 12px; border: 1px solid var(--line); background: rgba(4,14,29,.88); color: var(--cyan); font-size: 9px; letter-spacing: .15em; font-weight: 800; box-shadow: var(--glow); }
+    .tag-one { top: 13%; right: 0; }
+    .tag-two { bottom: 18%; left: 0; }
+    .tag-three { bottom: 4%; right: 10%; }
+    .side-label { position: absolute; right: -26px; top: 50%; writing-mode: vertical-rl; color: rgba(117,230,255,.35); font-size: 9px; letter-spacing: .3em; }
+
+    .ticker { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); overflow: hidden; background: rgba(5,17,34,.72); }
+    .ticker-track { display: flex; width: max-content; animation: marquee 28s linear infinite; }
+    .ticker span { padding: 17px 25px; color: #9bc7e2; font: 700 12px "Barlow Condensed", sans-serif; letter-spacing: .22em; }
+    .ticker i { color: var(--blue); font-style: normal; }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+
+    section { padding: 100px 0; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-bottom: 34px; }
+    .section-kicker { color: var(--blue); font-size: 10px; font-weight: 900; letter-spacing: .27em; text-transform: uppercase; }
+    h2 { margin: 10px 0 0; font: 800 clamp(42px, 6vw, 68px)/.95 "Barlow Condensed", sans-serif; text-transform: uppercase; letter-spacing: -.02em; }
+    .section-desc { max-width: 390px; color: var(--muted); font-size: 13px; line-height: 1.8; }
+    .roles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .role-card {
+      position: relative; padding: 28px 25px 25px; min-height: 310px; overflow: hidden;
+      border: 1px solid rgba(66,177,255,.2); background: linear-gradient(145deg, rgba(10,28,53,.84), rgba(5,12,25,.86));
+      transition: transform .25s, border-color .25s, box-shadow .25s;
+    }
+    .role-card::before { content: ""; position: absolute; width: 160px; height: 160px; right: -75px; top: -75px; border: 1px solid rgba(24,191,255,.25); transform: rotate(45deg); }
+    .role-card::after { content: ""; position: absolute; top: 0; left: -100%; width: 60%; height: 1px; background: var(--cyan); box-shadow: 0 0 18px var(--blue); }
+    .role-card:hover { transform: translateY(-7px); border-color: rgba(24,191,255,.65); box-shadow: var(--glow); }
+    .role-card:hover::after { animation: sweep 1.1s ease; }
+    .role-no { color: rgba(117,230,255,.42); font: 700 12px "Barlow Condensed", sans-serif; letter-spacing: .2em; }
+    .role-icon { width: 49px; height: 49px; display: grid; place-items: center; margin: 22px 0 18px; border: 1px solid rgba(24,191,255,.45); color: var(--cyan); font-size: 22px; box-shadow: inset 0 0 18px rgba(24,191,255,.09); }
+    .role-card h3 { margin: 0 0 10px; font: 800 28px "Barlow Condensed", sans-serif; letter-spacing: .04em; }
+    .role-card p { color: var(--muted); font-size: 12px; line-height: 1.8; min-height: 65px; }
+    .role-link { display: inline-flex; margin-top: 13px; color: var(--cyan); font-size: 10px; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; }
+    .role-link span { margin-left: 9px; transition: transform .2s; }
+    .role-card:hover .role-link span { transform: translateX(5px); }
+
+    .why { display: grid; grid-template-columns: .8fr 1.2fr; gap: 60px; align-items: start; }
+    .why-panel { padding: 30px; border-left: 2px solid var(--blue); background: linear-gradient(90deg, rgba(24,191,255,.08), transparent); }
+    .why-panel blockquote { margin: 0; font: 700 29px/1.15 "Barlow Condensed", sans-serif; text-transform: uppercase; }
+    .why-panel p { color: var(--muted); font-size: 12px; line-height: 1.8; margin-bottom: 0; }
+    .benefits { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 30px; }
+    .benefit { display: flex; gap: 14px; }
+    .check { flex: 0 0 24px; height: 24px; display: grid; place-items: center; color: var(--cyan); border: 1px solid var(--line); font-size: 12px; }
+    .benefit b { display: block; font-size: 12px; margin-bottom: 6px; }
+    .benefit small { color: var(--muted); font-size: 11px; line-height: 1.6; }
+
+    .process { display: grid; grid-template-columns: repeat(3,1fr); border: 1px solid var(--line); background: rgba(7,18,35,.55); }
+    .step { padding: 25px; border-right: 1px solid var(--line); }
+    .step:last-child { border: 0; }
+    .step strong { color: var(--blue); font: 800 34px "Barlow Condensed", sans-serif; }
+    .step h3 { margin: 8px 0; font-size: 13px; }
+    .step p { color: var(--muted); font-size: 11px; line-height: 1.7; }
+
+    .cta {
+      text-align: center; position: relative; overflow: hidden; padding: 75px 25px;
+      border: 1px solid rgba(24,191,255,.34);
+      background: radial-gradient(ellipse at 50% 0%, rgba(0,145,255,.2), transparent 65%), rgba(7,18,36,.8);
+      box-shadow: inset 0 0 70px rgba(24,191,255,.05);
+    }
+    .cta::before, .cta::after { content: ""; position: absolute; width: 220px; height: 220px; border: 1px solid rgba(24,191,255,.15); transform: rotate(45deg); }
+    .cta::before { left: -160px; top: -120px; } .cta::after { right: -160px; bottom: -120px; }
+    .cta h2 { font-size: clamp(48px, 7vw, 82px); }
+    .cta p { max-width: 550px; margin: 18px auto 26px; color: var(--muted); font-size: 13px; line-height: 1.8; }
+    footer { padding: 28px 0 38px; color: #71899e; font-size: 10px; letter-spacing: .08em; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; border-top: 1px solid rgba(103,190,255,.12); padding-top: 25px; }
+    .footer-inner b { color: var(--cyan); letter-spacing: .2em; }
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .cursor-glow { position: fixed; width: 220px; height: 220px; border-radius: 50%; pointer-events: none; z-index: -1; background: radial-gradient(circle, rgba(0,151,255,.08), transparent 68%); transform: translate(-50%,-50%); }
+    .toast { position: fixed; bottom: 22px; left: 50%; transform: translate(-50%, 20px); opacity: 0; padding: 12px 18px; background: #081a30; border: 1px solid var(--blue); color: var(--cyan); font-size: 11px; z-index: 20; transition: .3s; box-shadow: var(--glow); text-align: center; width: max-content; max-width: calc(100% - 30px); }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width: 850px) {
+      nav { gap: 14px; } nav a:not(.nav-cta) { display: none; }
+      .hero { grid-template-columns: 1fr; padding-top: 65px; text-align: center; }
+      .hero-copy { margin: auto; } .actions { justify-content: center; }
+      .hero-art { min-height: 390px; grid-row: 1; }
+      .halo { width: 330px; } .core { width: 205px; height: 205px; }
+      .core-inner b { font-size: 50px; }
+      .side-label { display: none; }
+      .section-head { display: block; } .section-desc { margin-top: 16px; }
+      .why { grid-template-columns: 1fr; gap: 28px; }
+    }
+    @media (max-width: 650px) {
+      .wrap { width: min(100% - 30px, 520px); }
+      header { height: 70px; } .brand span { font-size: 15px; }
+      .nav-cta { padding: 9px 10px; font-size: 9px; }
+      .hero { min-height: auto; padding: 45px 0 70px; gap: 10px; }
+      .hero-art { min-height: 300px; } .halo { width: 270px; } .core { width: 165px; height: 165px; }
+      .core-inner b { font-size: 42px; } .tag-one { right: 0; top: 5%; } .tag-two { left: 0; bottom: 13%; }
+      .tag-three { right: 0; bottom: 1%; }
+      h1 { font-size: clamp(72px, 19vw, 112px); }
+      .slogan { font-size: 10px; letter-spacing: .22em; }
+      section { padding: 70px 0; }
+      .roles { grid-template-columns: 1fr; }
+      .role-card { min-height: 0; }
+      .role-card p { min-height: 0; }
+      .benefits { grid-template-columns: 1fr; }
+      .process { grid-template-columns: 1fr; }
+      .step { border-right: 0; border-bottom: 1px solid var(--line); }
+      .step:last-child { border-bottom: 0; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise"></div><div class="scanline"></div><div class="cursor-glow" id="cursorGlow"></div>
+  <div class="wrap">
+    <header>
+      <a class="brand" href="#top" aria-label="PIXELON domov">
+        <div class="brand-mark">P</div>
+        <div><span>PIXELON</span><small>DIGITAL CREATIVE STUDIO</small></div>
+      </a>
+      <nav aria-label="Hlavná navigácia">
+        <a href="#pozicie">Pozície</a>
+        <a href="#spolupraca">Spolupráca</a>
+        <a class="nav-cta" href="#prihlaska">Pridaj sa ↗</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-content">
+          <div class="eyebrow"><span class="dot"></span> Nábor nových talentov / 2026</div>
+          <h1><span class="pixel">PIXEL</span><span class="on">ON.</span></h1>
+          <div class="slogan">EDIT. CREATE. DOMINATE.</div>
+          <p class="hero-copy">
+            <strong>Budujeme niečo nové.</strong> PIXELON rozširuje svoj tím a hľadá kreatívnych
+            ľudí, technické talenty a spoľahlivých spolupracovníkov, ktorí chcú rásť spolu s nami.
+          </p>
+          <div class="actions">
+            <a class="btn" href="#pozicie">Preskúmať pozície <span>↘</span></a>
+            <a class="btn secondary" href="#prihlaska">Stať sa súčasťou tímu</a>
+          </div>
+        </div>
+        <div class="hero-art" aria-label="Animovaný grafický symbol PIXELON">
+          <div class="halo"></div>
+          <div class="core"><div class="core-inner"><b>PX</b><small>CREATE THE NEXT</small></div></div>
+          <div class="orbit-tag tag-one">CREATIVE / 01</div>
+          <div class="orbit-tag tag-two">TECH / 02</div>
+          <div class="orbit-tag tag-three">TEAM / 03</div>
+          <div class="side-label">PIXELON DIGITAL DIVISION</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="ticker" aria-hidden="true"><div class="ticker-track">
+    <span>VIDEO EDITING <i>✦</i></span><span>WEB DEVELOPMENT <i>✦</i></span><span>CREATIVE THINKING <i>✦</i></span><span>TEAMWORK <i>✦</i></span><span>PIXELON <i>✦</i></span>
+    <span>VIDEO EDITING <i>✦</i></span><span>WEB DEVELOPMENT <i>✦</i></span><span>CREATIVE THINKING <i>✦</i></span><span>TEAMWORK <i>✦</i></span><span>PIXELON <i>✦</i></span>
+  </div></div>
+
+  <div class="wrap">
+    <section id="pozicie">
+      <div class="section-head reveal">
+        <div><div class="section-kicker">01 / Otvorené pozície</div><h2>Find your place<br>in the system.</h2></div>
+        <p class="section-desc">Hľadáme ľudí na rôzne úlohy. Nemusíš vedieť všetko — dôležitá je spoľahlivosť, komunikácia a chuť posúvať sa.</p>
+      </div>
+      <div class="roles">
+        <article class="role-card reveal">
+          <div class="role-no">POSITION / 001</div><div class="role-icon">▣</div>
+          <h3>VIDEO EDITOR</h3>
+          <p>Premieňaj surové zábery na pútavý obsah. Strih, titulky, efekty, zvuk a kreatívne spracovanie videí.</p>
+          <a class="role-link" href="#prihlaska" data-role="Video Editor">Mám záujem <span>→</span></a>
+        </article>
+        <article class="role-card reveal">
+          <div class="role-no">POSITION / 002</div><div class="role-icon">⌘</div>
+          <h3>WEBMASTER</h3>
+          <p>Pomáhaj tvoriť a spravovať moderné weby. Webový dizajn, obsah, úpravy a technická starostlivosť.</p>
+          <a class="role-link" href="#prihlaska" data-role="Webmaster">Mám záujem <span>→</span></a>
+        </article>
+        <article class="role-card reveal">
+          <div class="role-no">POSITION / 003</div><div class="role-icon">✧</div>
+          <h3>A-TEAM</h3>
+          <p>Buď pri plánovaní a rozvoji PIXELON. Nápady, organizácia, komunikácia, marketing a tímová koordinácia.</p>
+          <a class="role-link" href="#prihlaska" data-role="A-Team Member">Mám záujem <span>→</span></a>
+        </article>
+      </div>
+    </section>
+
+    <section id="spolupraca">
+      <div class="why">
+        <div class="why-panel reveal">
+          <div class="section-kicker">02 / Spolupráca</div>
+          <blockquote>Talent je začiatok.<br>Prístup robí rozdiel.</blockquote>
+          <p>PIXELON je projekt vo vývoji. Chceme vytvoriť tím, v ktorom má každý jasnú úlohu a férové podmienky.</p>
+        </div>
+        <div class="benefits reveal">
+          <div class="benefit"><div class="check">✓</div><div><b>Priestor na rast</b><small>Rozvíjaj svoje schopnosti na konkrétnych zadaniach.</small></div></div>
+          <div class="benefit"><div class="check">✓</div><div><b>Reálne portfólio</b><small>Po dohode môžeš prezentovať svoju dokončenú prácu.</small></div></div>
+          <div class="benefit"><div class="check">✓</div><div><b>Tímová spolupráca</b><small>Komunikuj s ľuďmi z kreatívnej a technickej oblasti.</small></div></div>
+          <div class="benefit"><div class="check">✓</div><div><b>Odmena za projekty</b><small>Podiel zo zákazky sa dohodne vopred podľa práce a zodpovednosti.</small></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head reveal">
+        <div><div class="section-kicker">03 / Ako sa pridať</div><h2>Three steps.<br>One new start.</h2></div>
+        <p class="section-desc">Jednoduchý a transparentný výber. Najprv sa spoznáme, potom si vyjasníme očakávania.</p>
+      </div>
+      <div class="process reveal">
+        <div class="step"><strong>01</strong><h3>Pošli prihlášku</h3><p>Napíš, o ktorú pozíciu máš záujem a čo už vieš alebo sa chceš naučiť.</p></div>
+        <div class="step"><strong>02</strong><h3>Krátky rozhovor</h3><p>Preberieme tvoje skúsenosti, dostupnosť a predstavu o spolupráci.</p></div>
+        <div class="step"><strong>03</strong><h3>Dohodneme podmienky</h3><p>Pred začiatkom si písomne potvrdíme úlohy, podiel, termíny a spôsob vyplatenia.</p></div>
+      </div>
+    </section>
+
+    <section id="prihlaska">
+      <div class="cta reveal">
+        <div class="section-kicker">04 / Your next move</div>
+        <h2>READY TO JOIN<br><span style="color:var(--cyan);text-shadow:0 0 25px rgba(24,191,255,.4)">PIXELON?</span></h2>
+        <p>Ak máš záujem, ozvi sa nám cez Discord. Pošli krátke predstavenie, vybranú pozíciu a prípadne ukážku svojej práce.</p>
+        <!-- Nahraď # skutočným pozývacím odkazom na svoj Discord server. -->
+        <a class="btn" id="discordBtn" href="#" target="_blank" rel="noopener">Pridať sa na Discord <span>↗</span></a>
+        <div style="margin-top:15px;color:#718da5;font-size:10px;letter-spacing:.1em">PIXELON / EDIT. CREATE. DOMINATE.</div>
+      </div>
+    </section>
+  </div>
+
+  <footer><div class="wrap footer-inner"><div><b>PIXELON</b> &nbsp; EDIT. CREATE. DOMINATE.</div><div>© <span id="year"></span> PIXELON. Všetky práva vyhradené.</div></div></footer>
+  <div class="toast" id="toast">Najprv vlož svoj Discord pozývací odkaz do HTML kódu.</div>
+
+  <script>
+    // 1. Vlož svoj Discord invite link namiesto prázdneho textu.
+    const DISCORD_INVITE = "https://discord.gg/W6QJREbc3q**?utm_source=chatgpt.com";
+    const discordBtn = document.getElementById("discordBtn");
+    const toast = document.getElementById("toast");
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    discordBtn.addEventListener("click", (event) => {
+      if (!DISCORD_INVITE.trim()) {
+        event.preventDefault();
+        toast.classList.add("show");
+        window.setTimeout(() => toast.classList.remove("show"), 3200);
+      } else {
+        discordBtn.href = DISCORD_INVITE;
+      }
+    });
+
+    document.querySelectorAll("[data-role]").forEach(link => {
+      link.addEventListener("click", () => {
+        sessionStorage.setItem("pixelon_selected_role", link.dataset.role);
+      });
+    });
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+
+    const glow = document.getElementById("cursorGlow");
+    window.addEventListener("pointermove", event => {
+      glow.style.left = event.clientX + "px";
+      glow.style.top = event.clientY + "px";
+    }, { passive: true });
+  </script>
+</body>
+</html>
